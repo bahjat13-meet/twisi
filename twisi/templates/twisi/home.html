@@ -1,6 +1,12 @@
 {% extends "twisi/base.html" %}
 {% load staticfiles %}
 
+{% block scripts %}
+$(function() {
+    // JAVASCRIPT HERE
+});
+{% endblock %}
+
 {% block content %}  <!-- Header -->
     <header>
         <div class="container">
@@ -8,7 +14,7 @@
                 <div class="col-lg-12">
                     <img class="img-responsive" src="{% static "img/log.png"%}" alt="" style="width:300px;height:300px;border-radius:150px;">
                     <div class="intro-text">
-                        <span class="name">Start Drawing</span>
+                        <span class="name">Start Drawing & Learning</span>
                         <hr class="star-light">
                         <span class="skills">Draw - Socialise - Learn</span>
                     </div>
@@ -143,14 +149,14 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Nationality</label>
-                                <input type="text" class="form-control" placeholder="Nationality" id="Natinality" required data-validation-required-message="Please enter your Nationality.">
+                                <input type="text" class="form-control" placeholder="Nationality" id="Nationality" required data-validation-required-message="Please enter your Nationality.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Password</label>
-                                <input type="password" class="form-control" placeholder="Password" id="phone" required data-validation-required-message="Please enter your password.">
+                                <input type="password" class="form-control" placeholder="Password" id="password" required data-validation-required-message="Please enter your password.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -193,14 +199,14 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Name" id="name1" required data-validation-required-message="Please enter your name.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Password</label>
-                                <input type="Password" class="form-control" placeholder="Password" id="Password" required data-validation-required-message="Please enter your Password.">
+                                <input type="Password" class="form-control" placeholder="Password" id="Password1" required data-validation-required-message="Please enter your Password.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -255,7 +261,7 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Name" id="name2" required data-validation-required-message="Please enter your name.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
