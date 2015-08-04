@@ -15,6 +15,7 @@ sudo apt-get upgrade -y
 sudo apt-get install -y git ruby python-pip python-virtualenv libpq-dev python-dev
 sudo apt-get install -y postgresql postgresql-contrib
 sudo apt-get install -y libncurses-dev
+pip install -r requirements.txt
 wget -O- https://toolbelt.heroku.com/install.sh | sh
 ```
 ## For OSX
