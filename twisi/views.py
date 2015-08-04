@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 # Create your views here.
 
 def base(request):
-    return render(request, 'twisi/base.html')
+    return render(request, 'twisi/home.html')
 
 
 @require_http_methods(["GET", "POST"])
@@ -28,6 +28,7 @@ def registration(request):
 
 	response = { 'success' : True}
 	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+
 
 
 @require_http_methods(["GET", "POST"])
