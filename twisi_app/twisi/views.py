@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from twisi.models import Twisser
+from twisi.models import Drawing
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -8,6 +9,7 @@ from django.contrib.auth import authenticate
 import datetime
 import pytz
 from django.templatetags.static import static
+import pdb
 # Create your views here.
 
 def base(request):
@@ -36,9 +38,12 @@ def registration(request):
 
 @require_http_methods(["GET", "POST"])
 def check_login(request):
-	return login_helper(request)
+	response = login_helper(request)
+	return HttpResponse(simplejson.dumps(response), content_type='application/json')
 
+@require_http_methods(["GET", "POST"])
 def upload_image(request):
+	pdb.set_trace()
 	response = login_helper(request)
 	if (response['success'] == False):
 		return HttpResponse(simplejson.dumps(response), content_type='application/json')
@@ -51,7 +56,7 @@ def upload_image(request):
 	user = 	User.objects.get(username = username)
 	if request.method == 'POST':
 		try:
-			drawing = Drawing(twisser=user.twisser,category = category, date=datetime.datetime.now(pytz.UTC))
+			drawing = Drawing(twisser=user.twisser, category = category, date=datetime.datetime.now(pytz.UTC))
 			drawing.save()
 			filename = 'twisi/static/twisi/img/gallery/{0}.png'.format(drawing.id)
 			drawing.filename=filename
@@ -154,15 +159,15 @@ def login_helper(request):
 		password = request.POST['password']
 	except:
 		response = { 'success' : False, 'message' : "Missing fields"}
-		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+		return response
 
 	user = authenticate(username = username , password = password)
 	if user is not None:
 		response = { 'success' : True}
-		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+		return response
 	else:
 		response = { 'success' : False, 'message' : "wrong username/password"}
-		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+		return response
 
 
 
