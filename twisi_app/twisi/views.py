@@ -9,7 +9,6 @@ from django.contrib.auth import authenticate
 import datetime
 import pytz
 from django.templatetags.static import static
-import pdb
 # Create your views here.
 
 def base(request):
@@ -43,7 +42,6 @@ def check_login(request):
 
 @require_http_methods(["GET", "POST"])
 def upload_image(request):
-	pdb.set_trace()
 	response = login_helper(request)
 	if (response['success'] == False):
 		return HttpResponse(simplejson.dumps(response), content_type='application/json')
