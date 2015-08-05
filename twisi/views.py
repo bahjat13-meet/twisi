@@ -8,6 +8,7 @@ import simplejson
 from django.contrib.auth import authenticate
 import datetime
 import pytz
+import pdb
 # Create your views here.
 
 def base(request):
@@ -45,6 +46,7 @@ def check_login(request):
 
 @require_http_methods(["GET", "POST"])
 def upload_image(request):
+	break
 	response = login_helper(request)
 	if (response['success'] == False):
 		return response
