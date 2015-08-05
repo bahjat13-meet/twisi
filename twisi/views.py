@@ -40,7 +40,6 @@ def registration(request):
 
 @require_http_methods(["GET", "POST"])
 def check_login(request):
-	asdfasdoifh
 	return HttpResponse(simplejson.dumps(login_helper(request)), content_type='application/json')
 
 
