@@ -8,7 +8,6 @@ import simplejson
 from django.contrib.auth import authenticate
 import datetime
 import pytz
-from django.templatetags.static import static
 # Create your views here.
 
 def base(request):
@@ -48,7 +47,8 @@ def check_login(request):
 def upload_image(request):
 	response = login_helper(request)
 	if (response['success'] == False):
-		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+		return response
+
 	try:	
 		username = request.POST['username']
 		category = request.POST['category']
@@ -60,7 +60,7 @@ def upload_image(request):
 		try:
 			drawing = Drawing(user = user ,category = category, date=datetime.datetime.now(pytz.UTC))
 			drawing.save()
-			filename = 'twisi/static/twisi/img/gallery/{0}.png'.format(drawing.id)
+			filename = 'twisi/static/img/gallery/{0}.png'.format(drawing.id)
 			drawing.filename=filename
 			drawing.save()
 		except:
@@ -96,7 +96,10 @@ def login_helper(request):
 		return response
 	else:	
 		response = { 'success' : False, 'message' : "wrong username/password"}
-		return response           	
+		return response
+
+
+		           	
 
 
 
