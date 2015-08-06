@@ -1,11 +1,37 @@
 {% extends "twisi/base.html" %}
 {% load staticfiles %}
 
+
 {% block scripts %}
 $(function() {
-    // JAVASCRIPT HERE
+	$('#register-form').submit(function(event) {
+		event.preventDefault();
+		d={'username': $('#name').val() , 'nationality': $('#Nationality').val() , 'password' : $('#password').val()};
+		$.post('/registration', d, function(response) {
+			if (response['success']==true) {
+				location.href = '/gallery';
+			} else {
+				$('#success').text(response['message']);
+			}
+
+		});
+	});
+	$('#login_form').submit(function(event) {
+		event.preventDefault();
+		sign={'username': $('#name1').val() , 'password' : $('#password1').val()};
+		$.post('/check_login' , sign, function (response) {
+			if (response['success']==true) {
+				location.href='/gallery';
+			}else{
+				$('#login-message').text(response['message']);
+			}
+		});
+	});
+	
+
 });
 {% endblock %}
+
 
 {% block content %}  <!-- Header -->
     <header style="background:url('{% static "twisi/img/back1.jpg"%}');">
@@ -40,7 +66,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic1.jpeg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic1.jpeg"%}" class="img-responsive" alt="" style="width:300px;height:250px; border: solid black 3px;">
                     </a>
                 </div>
                <div class="col-sm-4 portfolio-item">
@@ -50,7 +76,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic2.jpg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic2.jpg"%}" class="img-responsive" alt="" style="width:300px;height:250px;border: solid black 3px;">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -60,7 +86,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic3.jpg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic3.jpg"%}" class="img-responsive" alt="" style="width:300px;height:250px;border: solid black 3px;">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -70,7 +96,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic4.jpg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic4.jpg"%}" class="img-responsive" alt="" style="width:300px;height:250px;border: solid black 3px;">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -80,7 +106,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic5.jpg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic5.jpg"%}" class="img-responsive" alt="" style="width:300px;height:250px;border: solid black 3px;">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -90,7 +116,7 @@ $(function() {
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>-->
-                        <img src="{% static "twisi/img/pic6.jpg"%}" class="img-responsive" alt="" style="width:350px;height:300px;">
+                        <img src="{% static "twisi/img/pic6.jpg"%}" class="img-responsive" alt="" style="width:300px;height:250px;border: solid black 3px;">
                     </a>
                 </div>
             </div>
@@ -138,25 +164,25 @@ $(function() {
                 <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
                     <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form action="/register" method="POST" name="sentMessage" id="register-form" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Username</label>
-                                <input type="text" class="form-control" placeholder="Username" id="name" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Username" id="name" required data-validation-required-message="Please enter your Username." name="username">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Nationality</label>
-                                <input type="text" class="form-control" placeholder="Nationality" id="Nationality" required data-validation-required-message="Please enter your Nationality.">
+                                <input type="text" class="form-control" placeholder="Nationality" id="Nationality" required data-validation-required-message="Please enter your Nationality." name="nationality">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Password</label>
-                                <input type="password" class="form-control" placeholder="Password" id="password" required data-validation-required-message="Please enter your password.">
+                                <input type="password" class="form-control" placeholder="Password" id="password" required data-validation-required-message="Please enter your Password." name="password">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -195,21 +221,24 @@ $(function() {
                 <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
                     <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form action="/signin" method="POST" name="sentMessage" id="login_form" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Username" id="name1" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Username" id="name1" required data-validation-required-message="Please enter your name." name="username">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Password</label>
-                                <input type="password" class="form-control" placeholder="Password" id="password1" required data-validation-required-message="Please enter your Password."p
+                                <input type="password" class="form-control" placeholder="Password" id="password1" required data-validation-required-message="Please enter your Password." name="password">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
+			<div id="login-message">
+			</div>
+			
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <!--<label>Phone Number</label>

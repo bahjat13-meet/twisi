@@ -14,5 +14,8 @@ urlpatterns = [
 	url(r'^submit_image$', views.submit_image, name='submit_image'),
 	url(r'^add_twissies$', views.add_twissies, name='add_twissies'),
 	url(r'^add_votes$', views.add_votes, name='add_votes'),
-
- ]
+	url(r'^gallery$', views.page, name='page2'),
+	url(r'^register$', views.register, name='register'),
+	url(r'^signin$', views.login_page, name='login'),
+	url(r'^logout$', views.logout_page, name='logout'),
+	]
