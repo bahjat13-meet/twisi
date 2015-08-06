@@ -56,13 +56,14 @@ def upload_image(request):
 		try:
 			drawing = Drawing(twisser=user.twisser, category = category, date=datetime.datetime.now(pytz.UTC))
 			drawing.save()
-			filename = 'twisi/static/twisi/img/gallery/{0}.png'.format(drawing.id)
+			filename = '/static/twisi/img/gallery/{0}.png'.format(drawing.id)
+			destination_filename = 'twisi/{0}'.format(filename)
 			drawing.filename=filename
 			drawing.save()
 		except:
 			response = { 'success' : False, 'message' : "the drawings didnt save"}
 			return HttpResponse(simplejson.dumps(response), content_type='application/json')
-		handle_uploaded_file(request.FILES['file'], filename)
+		handle_uploaded_file(request.FILES['file'], destination_filename)
 		response = { 'success' : True}
 		return HttpResponse(simplejson.dumps(response), content_type='application/json')
 	else:
@@ -117,6 +118,21 @@ def get_image(request):
 	}
 	return HttpResponse(simplejson.dumps(response), content_type='application/json')
 
+
+@require_http_methods(["GET", "POST"])
+def submit_image(request):
+	response = login_helper(request)
+	if (response['success'] == False):
+		return response
+	drawing = Drawing.objects.get(id = request.POST['id'])
+	drawing.is_public = True
+	drawing.save()
+	response = {
+		'success' : True
+	}
+	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+
+
 	
 
 
@@ -144,6 +160,45 @@ def get_public_images_by_date(request):
 		'success' : True, 'drawings' : drawing_filtering
 	}
 	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+
+
+
+@require_http_methods(["GET", "POST"])
+def add_twissies(request):
+	response = login_helper(request)
+	if (response['success'] == False):
+		return response
+	try:	
+		twissies = request.POST['twissies']
+		username = request.POST['username']
+	except:
+		response = { 'success' : False, 'message' : "Missing fields"}
+		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+	user = User.objects.get(username = username)
+	user.twisser.twissies += request.POST['twissies']
+	user.save()
+	response = {
+		'success' : True
+	}
+	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+
+
+
+@require_http_methods(["GET", "POST"])
+def add_votes(request):
+	response = login_helper(request)
+	if (response['success'] == False):
+		return response
+	drawing = Drawing.objects.get(id = request.POST['id'])
+	drawing.score += 1
+	drawing.save()
+	response = {
+		'success' : True
+	}
+	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+	
+	
+	
 
 
 def handle_uploaded_file(f, filename):
