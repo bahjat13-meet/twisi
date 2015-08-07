@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from twisi.models import Twisser
 from twisi.models import Drawing
 from django.contrib.auth.models import User
@@ -9,31 +10,67 @@ from django.contrib.auth import authenticate
 import datetime
 import pytz
 from django.templatetags.static import static
+from django.contrib.auth import login
+from django.contrib.auth import logout
 # Create your views here.
 
 def base(request):
     return render(request, 'twisi/home.html')
 
+def page(request):
+	if not request.user.is_authenticated():
+		return redirect('/#signin')
+	else:
+   		return render(request, 'twisi/page2.html')
+
+def checkIfUserExists(username):
+    """Function to check if username exists"""
+    return User.objects.filter(username=username).exists()
+
+@require_http_methods(["GET", "POST"])
+def register(request):
+	# Use Monther's registration method to register the user
+	# Log in the user
+	# Redirect the user to /gallery
+	response = register_helper(request)
+	if response['success'] == True:
+            return redirect('/gallery')
+	else:
+	    return redirect('/')
+
 
 @require_http_methods(["GET", "POST"])
 def registration(request):
+	response = register_helper(request)
+	return HttpResponse(simplejson.dumps(response), content_type='application/json')
+
+def register_helper(request):
 	try:
 		username = request.POST['username']
 		password = request.POST['password']
 		nationality = request.POST['nationality']
 	except:
 		response = { 'success' : False, 'message' : "Missing fields"}
-		return HttpResponse(simplejson.dumps(response), content_type='application/json')
+		return response
+
+	if username=="" or password=="" or nationality=="":
+		response={'success' : False, 'message' : "please fill the fields"}
+		return response
+	
 	user = User(username = username)
-	user.set_password(password)
-	user.save()
-	twisser = Twisser(user=user , nationality=nationality)
-	twisser.save()
+        if checkIfUserExists(username):
+		response={'success' : False, 'message' : " username is already taken"}
+		return response
+        else:
+		user.set_password(password)
+		user.save()
+		twisser = Twisser(user=user , nationality=nationality)
+		twisser.save()
+		login_helper(request)
+	  	response = { 'success' : True}
+	 	return response
 
-	response = { 'success' : True}
-	return HttpResponse(simplejson.dumps(response), content_type='application/json')
-
-
+# login(request, user)
 
 @require_http_methods(["GET", "POST"])
 def check_login(request):
@@ -206,6 +243,23 @@ def handle_uploaded_file(f, filename):
         for chunk in f.chunks():
             destination.write(chunk)
 
+@require_http_methods(["GET", "POST"])
+def login_page(request):
+	response = login_helper(request)
+	if response['success'] == True:
+		return redirect('/gallery')
+	else:
+		response={'success' : False, 'message' : " wrong username or password"}
+		return redirect('/')
+	
+	
+@require_http_methods(["GET", "POST"])
+def logout_page(request):
+	logout(request)
+	return redirect('/')
+	
+
+
 def login_helper(request):
 	try:
 		username = request.POST['username']
@@ -213,14 +267,19 @@ def login_helper(request):
 	except:
 		response = { 'success' : False, 'message' : "Missing fields"}
 		return response
+	if username=="" or password=="":
+		response = { 'success' : False, 'message' : "please fill the fields"}
+		return response
+		
 
 	user = authenticate(username = username , password = password)
 	if user is not None:
+		login(request, user)
 		response = { 'success' : True}
 		return response
 	else:
-		response = { 'success' : False, 'message' : "wrong username/password"}
-		return response
+		respons = { 'success' : False, 'message' : "wrong username/password"}
+		return respons
 
 
 

@@ -1,0 +1,95 @@
+{% extends "twisi/base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+.gallery-image {
+	border: solid black 3px;
+	width: 300px;
+	height: 250px;
+}
+
+{% endblock %}
+
+{% block scripts %}
+$(function() {
+    // JAVASCRIPT HERE
+});
+{% endblock %}
+
+{% block content %}
+
+<section id="portfolio" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Gallery</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/drawing1.png"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+               <div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/drawing2.png"%}" class="img-responsive" alt="">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    
+                        <img class="gallery-image" src="{% static "twisi/img/drawing3.png"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/drawing4.png"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    
+                        <img class="gallery-image" src="{% static "twisi/img/drawing5.png"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/fam.png"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+ 		<div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/pic4.jpg"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+		<div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/pic6.jpg"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+		<div class="col-sm-4 portfolio-item">
+                   
+                        <img class="gallery-image" src="{% static "twisi/img/pic5.jpg"%}" class="img-responsive" alt="" >
+                    </a>
+                </div>
+ 		
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
